@@ -89,7 +89,7 @@ indexlines = []
 for replacenumber in range(0, len(indexlines_withumlaute)):
     indexlines.append(replaceumlaute(indexlines_withumlaute[replacenumber].decode("utf-8")))
 
-outputheader=['BEGIN:VCALENDAR','PRODID:EmmanouilKampitakis','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche', 'BEGIN:VEVENT']
+outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche', 'BEGIN:VEVENT']
 
 output=[]
 
