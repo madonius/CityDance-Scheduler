@@ -25,25 +25,25 @@ import os
 import datetime
 import time
 import random
-import urllib
+import urllib.request
 
 
 #makes parsing of text simpler
-def replaceumlaute(text):
-    
-    umlautDIC = {
-        u'ä' : 'ae',
-        u'Ä' : 'Ae',
-        u'ü' : 'ue',
-        u'Ü' : 'Ue',
-        u'ö' : 'oe',
-        u'Ö' : 'Oe',
-        u'ß' : 'ss'}
-
-    for key in umlautDIC:
-        text = text.replace(key, umlautDIC[key])
-
-    return text
+#def replaceumlaute(text):
+#    
+#    umlautDIC = {
+#        u'ä' : 'ae',
+#        u'Ä' : 'Ae',
+#        u'ü' : 'ue',
+#        u'Ü' : 'Ue',
+#        u'ö' : 'oe',
+#        u'Ö' : 'Oe',
+#        u'ß' : 'ss'}
+#
+#    for key in umlautDIC:
+#        text = text.replace(key, umlautDIC[key])
+#
+#    return text
 
 #returns the Date in a ics compatible format
 def returndate():
@@ -70,7 +70,8 @@ sched_text = re.compile("([\w|(|)|\s|,]*)")
 today = datetime.date.today()
 
 #download the relevant page
-indexhtml = urllib.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+today.strftime("%Y-%m-%d")+'/view,danceschedule/')
+with urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+today.strftime("%Y-%m-%d")+'/view,danceschedule/') as url:
+    indexhtml = url.read()
 indexlines_withumlaute = indexhtml.readlines()
 indexhtml.close()
 
@@ -99,21 +100,21 @@ for i in range(0,len(outputheader)-1):
 for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
         datum = sched_date.search(indexlines[linenumber+2])
-
-	#reformat dates
+        
+  	#reformat dates
         if len(datum.groups()[0]) == 2:
             day=datum.groups()[0]
         else:
             day="0"+datum.groups()[0]
-
-        
-	if len(datum.groups()[1]) == 2:
+             
+             
+        if len(datum.groups()[1]) == 2:
             month=datum.groups()[1]
-	else:
+        else:
             month="0"+datum.groups()[1]
-
-        year=datum.groups()[2]
-        
+ 
+        year=datum.groups()[2]  
+         
         if isdate == 1:
             log = open("./files/dates.log","r+a")
             log_mem = log.read()
@@ -151,14 +152,15 @@ for linenumber in range(0, len(indexlines)-1):
         else: 
             log.close()
                 
-output.append('END:VCALENDAR')
+            output.append('END:VCALENDAR')
 
 if not os.path.isfile('./output/output"+time.strftime("%Y%m%d")+".ics"'):
-   output_file = open("./output/output"+time.strftime("%Y%m%d")+".ics","w")
-   for outputline in range(0,len(output)):
-       output_file.write(output[outputline]+'\r\n')
-   output_file.close()
-
+    output_file = open("./output/output"+time.strftime("%Y%m%d")+".ics","w")
+    for outputline in range(0,len(output)):
+        output_file.write(output[outputline]+'\r\n')
+output_file.close()
+        
                
+
 
 
