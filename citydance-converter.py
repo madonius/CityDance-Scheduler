@@ -70,14 +70,13 @@ sched_text = re.compile("([\w|(|)|\s|,]*)")
 today = datetime.date.today()
 
 #download the relevant page
-with urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+today.strftime("%Y-%m-%d")+'/view,danceschedule/') as url:
-    indexhtml = url.read()
+indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+today.strftime("%Y-%m-%d")+'/view,danceschedule/')
 indexlines_withumlaute = indexhtml.readlines()
 indexhtml.close()
 
 #download the page for schedule in one week
 oneweek = today + datetime.timedelta(days=7)
-indexhtml = urllib.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+oneweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
+indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+oneweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
 indexlines2_withumlaute = indexhtml.readlines()
 
 for index in range(0,len(indexlines2_withumlaute)):
@@ -87,8 +86,8 @@ indexlines2_withumlaute=[]
 
 indexlines = []
 
-for replacenumber in range(0, len(indexlines_withumlaute)):
-    indexlines.append(replaceumlaute(indexlines_withumlaute[replacenumber].decode("utf-8")))
+#for replacenumber in range(0, len(indexlines_withumlaute)):
+#   indexlines.append(replaceumlaute(indexlines_withumlaute[replacenumber].decode("utf-8")))
 
 outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche', 'BEGIN:VEVENT']
 
