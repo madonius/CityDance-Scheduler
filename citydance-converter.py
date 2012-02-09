@@ -79,10 +79,10 @@ oneweek = today + datetime.timedelta(days=7)
 indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+oneweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
 indexlines2_withumlaute = indexhtml.readlines()
 
-for index in range(0,len(indexlines2_withumlaute)):
-	indexlines_withumlaute.append(indexlines2_withumlaute[index]) 
+indexlines_withumlaute.extend(indexlines2_withumlaute) 
+
 indexhtml.close()
-indexlines2_withumlaute=[]
+del indexlines2_withumlaute
 
 indexlines = []
 
@@ -93,8 +93,7 @@ outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGO
 
 output=[]
 
-for i in range(0,len(outputheader)-1):
-    output.append(outputheader[i])
+output.extend(outputheader)
 
 for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
