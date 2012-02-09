@@ -26,7 +26,7 @@ import datetime
 import time
 import random
 import urllib.request
-
+import codecs
 
 #makes parsing of text simpler
 #def replaceumlaute(text):
@@ -80,14 +80,11 @@ indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com
 indexlines2_withumlaute = indexhtml.readlines()
 
 indexlines_withumlaute.extend(indexlines2_withumlaute) 
-
 indexhtml.close()
 del indexlines2_withumlaute
 
-indexlines = []
+indexlines = [l.decode('utf-8') for l in indexlines_withumlaute]
 
-#for replacenumber in range(0, len(indexlines_withumlaute)):
-#   indexlines.append(replaceumlaute(indexlines_withumlaute[replacenumber].decode("utf-8")))
 
 outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche', 'BEGIN:VEVENT']
 
@@ -98,7 +95,7 @@ output.extend(outputheader)
 for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
         datum = sched_date.search(indexlines[linenumber+2])
-        
+        print(linenumber, file=sys.stderr)
   	#reformat dates
         if len(datum.groups()[0]) == 2:
             day=datum.groups()[0]
@@ -114,7 +111,7 @@ for linenumber in range(0, len(indexlines)-1):
         year=datum.groups()[2]  
          
         if isdate == 1:
-            log = open("./files/dates.log","r+a")
+            log = open("./files/dates.log","a+")
             log_mem = log.read()
         else:
             log = open("./files/dates.log","w")
@@ -130,6 +127,8 @@ for linenumber in range(0, len(indexlines)-1):
                     kursinhalt = sched_text.search(indexlines[sublinenumber+8].strip()).groups(1)[0]
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
                     
+                    print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
+
                     output.append('BEGIN:VEVENT')
                     output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
                     output.append('DTEND;TZID=Europe/Berlin:'+str(year)+str(month)+str(day)+'T'+str(int(uhrzeiten.groups()[2]))+str(int(uhrzeiten.groups()[3]))+"00Z")
@@ -152,13 +151,9 @@ for linenumber in range(0, len(indexlines)-1):
                 
             output.append('END:VCALENDAR')
 
+print("output created", file=sys.stderr)
 if not os.path.isfile('./output/output"+time.strftime("%Y%m%d")+".ics"'):
-    output_file = open("./output/output"+time.strftime("%Y%m%d")+".ics","w")
-    for outputline in range(0,len(output)):
-        output_file.write(output[outputline]+'\r\n')
-output_file.close()
-        
-               
-
-
-
+    print("writing file", file=sys.stderr)
+    output_file = open("./output/output"+time.strftime("%Y%m%d")+".ics","w", encoding="utf-8")
+    output_file.write('\r\n'.join(output))
+    output_file.close()
