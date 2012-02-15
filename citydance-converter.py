@@ -86,7 +86,7 @@ del indexlines2_withumlaute
 indexlines = [l.decode('utf-8') for l in indexlines_withumlaute]
 
 
-outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche', 'BEGIN:VEVENT']
+outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche']
 
 output=[]
 
@@ -142,14 +142,14 @@ for linenumber in range(0, len(indexlines)-1):
                     output.append('STATUS:TENTATIVE')
                     output.append('SUMMARY:'+stufe.strip()+": "+tanz.strip()+" mit "+tanzlehrer.strip())
                     output.append('TRANSP:TRANSPARENT')
-                    output.append('END:VEVENT')
-                    
+                    output.append('END:VEVENT')	                    
+
             log.write(str(year) + str(month) + str(day) +"\n")
             log.close()
         else: 
             log.close()
                 
-            output.append('END:VCALENDAR')
+        output.append('END:VCALENDAR')
 
 print("output created", file=sys.stderr)
 if not os.path.isfile('./output/output"+time.strftime("%Y%m%d")+".ics"'):
