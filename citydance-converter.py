@@ -149,7 +149,7 @@ for linenumber in range(0, len(indexlines)-1):
         else: 
             log.close()
                 
-        output.append('END:VCALENDAR')
+output.append('END:VCALENDAR')
 
 print("output created", file=sys.stderr)
 if not os.path.isfile('./output/output"+time.strftime("%Y%m%d")+".ics"'):
