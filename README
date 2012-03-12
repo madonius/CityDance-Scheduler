@@ -1,0 +1,2 @@
+This is Python Project converting the Citydance.de schedule into a Google-Importable .ics File
+The master branch runs in python 2.7 and the python 3 branch is self explainatory.
