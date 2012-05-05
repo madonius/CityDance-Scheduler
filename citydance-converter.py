@@ -74,14 +74,16 @@ indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com
 indexlines_withumlaute = indexhtml.readlines()
 indexhtml.close()
 
-#download the page for schedule in one week
-oneweek = today + datetime.timedelta(days=7)
-indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+oneweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
-indexlines2_withumlaute = indexhtml.readlines()
+for i in range(1 ,3):
+	
+	#download the page for schedule in one week
+	extendweek = today + datetime.timedelta(days=7*i)
+	indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
+	indexlines2_withumlaute = indexhtml.readlines()
+	indexhtml.close()
 
-indexlines_withumlaute.extend(indexlines2_withumlaute) 
-indexhtml.close()
-del indexlines2_withumlaute
+	indexlines_withumlaute.extend(indexlines2_withumlaute) 
+	del indexlines2_withumlaute
 
 indexlines = [l.decode('utf-8') for l in indexlines_withumlaute]
 
