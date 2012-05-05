@@ -74,11 +74,12 @@ indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com
 indexlines_withumlaute = indexhtml.readlines()
 indexhtml.close()
 
-for i in range(1 ,3):
+for i in range(1 , 4):
 	
 	#download the page for schedule in one week
 	extendweek = today + datetime.timedelta(days=7*i)
 	indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
+	print('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
 	indexlines2_withumlaute = indexhtml.readlines()
 	indexhtml.close()
 
@@ -97,7 +98,7 @@ output.extend(outputheader)
 for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
         datum = sched_date.search(indexlines[linenumber+2])
-        print(linenumber, file=sys.stderr)
+        #print(linenumber, file=sys.stderr)
   	#reformat dates
         if len(datum.groups()[0]) == 2:
             day=datum.groups()[0]
