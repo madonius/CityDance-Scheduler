@@ -28,23 +28,6 @@ import random
 import urllib.request
 import codecs
 
-#makes parsing of text simpler
-#def replaceumlaute(text):
-#    
-#    umlautDIC = {
-#        u'ä' : 'ae',
-#        u'Ä' : 'Ae',
-#        u'ü' : 'ue',
-#        u'Ü' : 'Ue',
-#        u'ö' : 'oe',
-#        u'Ö' : 'Oe',
-#        u'ß' : 'ss'}
-#
-#    for key in umlautDIC:
-#        text = text.replace(key, umlautDIC[key])
-#
-#    return text
-
 #returns the Date in a ics compatible format
 def returndate():
     return time.strftime("%Y%m%d") + "T" + time.strftime("%H%M%S") +"Z"
@@ -130,8 +113,9 @@ for linenumber in range(0, len(indexlines)-1):
                     kursinhalt = sched_text.search(indexlines[sublinenumber+8].strip()).groups(1)[0]
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
                     
-                    print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
-
+                    #print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
+                    print(stufe)
+                    
                     output.append('BEGIN:VEVENT')
                     output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
                     output.append('DTEND;TZID=Europe/Berlin:'+str(year)+str(month)+str(day)+'T'+str(int(uhrzeiten.groups()[2]))+str(int(uhrzeiten.groups()[3]))+"00Z")
