@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 #    Citydance Scheduler, converts the citydance.de program to an ics File
@@ -25,25 +25,25 @@ import os
 import datetime
 import time
 import random
-import urllib
-
+import urllib.request
+import codecs
 
 #makes parsing of text simpler
-def replaceumlaute(text):
-    
-    umlautDIC = {
-        u'ä' : 'ae',
-        u'Ä' : 'Ae',
-        u'ü' : 'ue',
-        u'Ü' : 'Ue',
-        u'ö' : 'oe',
-        u'Ö' : 'Oe',
-        u'ß' : 'ss'}
-
-    for key in umlautDIC:
-        text = text.replace(key, umlautDIC[key])
-
-    return text
+#def replaceumlaute(text):
+#    
+#    umlautDIC = {
+#        u'ä' : 'ae',
+#        u'Ä' : 'Ae',
+#        u'ü' : 'ue',
+#        u'Ü' : 'Ue',
+#        u'ö' : 'oe',
+#        u'Ö' : 'Oe',
+#        u'ß' : 'ss'}
+#
+#    for key in umlautDIC:
+#        text = text.replace(key, umlautDIC[key])
+#
+#    return text
 
 #returns the Date in a ics compatible format
 def returndate():
@@ -70,52 +70,51 @@ sched_text = re.compile("([\w|(|)|\s|,]*)")
 today = datetime.date.today()
 
 #download the relevant page
-indexhtml = urllib.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+today.strftime("%Y-%m-%d")+'/view,danceschedule/')
+indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+today.strftime("%Y-%m-%d")+'/view,danceschedule/')
 indexlines_withumlaute = indexhtml.readlines()
 indexhtml.close()
 
-#download the page for schedule in one week
-oneweek = today + datetime.timedelta(days=7)
-indexhtml = urllib.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+oneweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
-indexlines2_withumlaute = indexhtml.readlines()
+for i in range(1 , 4):
+	
+	#download the page for schedule in one week
+	extendweek = today + datetime.timedelta(days=7*i)
+	indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
+	print('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
+	indexlines2_withumlaute = indexhtml.readlines()
+	indexhtml.close()
 
-for index in range(0,len(indexlines2_withumlaute)):
-	indexlines_withumlaute.append(indexlines2_withumlaute[index]) 
-indexhtml.close()
-indexlines2_withumlaute=[]
+	indexlines_withumlaute.extend(indexlines2_withumlaute) 
+	del indexlines2_withumlaute
 
-indexlines = []
+indexlines = [l.decode('utf-8') for l in indexlines_withumlaute]
 
-for replacenumber in range(0, len(indexlines_withumlaute)):
-    indexlines.append(replaceumlaute(indexlines_withumlaute[replacenumber].decode("utf-8")))
 
-outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche', 'BEGIN:VEVENT']
+outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche']
 
 output=[]
 
-for i in range(0,len(outputheader)-1):
-    output.append(outputheader[i])
+output.extend(outputheader)
 
 for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
         datum = sched_date.search(indexlines[linenumber+2])
-
-	#reformat dates
+        #print(linenumber, file=sys.stderr)
+  	#reformat dates
         if len(datum.groups()[0]) == 2:
             day=datum.groups()[0]
         else:
             day="0"+datum.groups()[0]
-
-        
-	if len(datum.groups()[1]) == 2:
+             
+             
+        if len(datum.groups()[1]) == 2:
             month=datum.groups()[1]
-	else:
+        else:
             month="0"+datum.groups()[1]
-
-        year=datum.groups()[2]
-        
+ 
+        year=datum.groups()[2]  
+         
         if isdate == 1:
-            log = open("./files/dates.log","r+a")
+            log = open("./files/dates.log","a+")
             log_mem = log.read()
         else:
             log = open("./files/dates.log","w")
@@ -131,6 +130,8 @@ for linenumber in range(0, len(indexlines)-1):
                     kursinhalt = sched_text.search(indexlines[sublinenumber+8].strip()).groups(1)[0]
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
                     
+                    print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
+
                     output.append('BEGIN:VEVENT')
                     output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
                     output.append('DTEND;TZID=Europe/Berlin:'+str(year)+str(month)+str(day)+'T'+str(int(uhrzeiten.groups()[2]))+str(int(uhrzeiten.groups()[3]))+"00Z")
@@ -144,8 +145,8 @@ for linenumber in range(0, len(indexlines)-1):
                     output.append('STATUS:TENTATIVE')
                     output.append('SUMMARY:'+stufe.strip()+": "+tanz.strip()+" mit "+tanzlehrer.strip())
                     output.append('TRANSP:TRANSPARENT')
-                    output.append('END:VEVENT')
-                    
+                    output.append('END:VEVENT')	                    
+
             log.write(str(year) + str(month) + str(day) +"\n")
             log.close()
         else: 
@@ -153,12 +154,9 @@ for linenumber in range(0, len(indexlines)-1):
                 
 output.append('END:VCALENDAR')
 
+print("output created", file=sys.stderr)
 if not os.path.isfile('./output/output"+time.strftime("%Y%m%d")+".ics"'):
-   output_file = open("./output/output"+time.strftime("%Y%m%d")+".ics","w")
-   for outputline in range(0,len(output)):
-       output_file.write(output[outputline]+'\r\n')
-   output_file.close()
-
-               
-
-
+    print("writing file", file=sys.stderr)
+    output_file = open("./output/output"+time.strftime("%Y%m%d")+".ics","w", encoding="utf-8")
+    output_file.write('\r\n'.join(output))
+    output_file.close()
