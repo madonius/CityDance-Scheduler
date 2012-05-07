@@ -130,7 +130,7 @@ for linenumber in range(0, len(indexlines)-1):
                     kursinhalt = sched_text.search(indexlines[sublinenumber+8].strip()).groups(1)[0]
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
                     
-                    print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
+                    #print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
 
                     output.append('BEGIN:VEVENT')
                     output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
