@@ -28,23 +28,6 @@ import random
 import urllib.request
 import codecs
 
-#makes parsing of text simpler
-#def replaceumlaute(text):
-#    
-#    umlautDIC = {
-#        u'ä' : 'ae',
-#        u'Ä' : 'Ae',
-#        u'ü' : 'ue',
-#        u'Ü' : 'Ue',
-#        u'ö' : 'oe',
-#        u'Ö' : 'Oe',
-#        u'ß' : 'ss'}
-#
-#    for key in umlautDIC:
-#        text = text.replace(key, umlautDIC[key])
-#
-#    return text
-
 #returns the Date in a ics compatible format
 def returndate():
     return time.strftime("%Y%m%d") + "T" + time.strftime("%H%M%S") +"Z"
@@ -98,8 +81,7 @@ output.extend(outputheader)
 for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
         datum = sched_date.search(indexlines[linenumber+2])
-        #print(linenumber, file=sys.stderr)
-  	#reformat dates
+        
         if len(datum.groups()[0]) == 2:
             day=datum.groups()[0]
         else:
@@ -114,10 +96,10 @@ for linenumber in range(0, len(indexlines)-1):
         year=datum.groups()[2]  
          
         if isdate == 1:
-            log = open("./files/dates.log","a+")
+            log = open("./files/dates.log","r+")
             log_mem = log.read()
         else:
-            log = open("./files/dates.log","w")
+            log = open("./files/dates.log","a+")
 
         if((isdate==0) or (log_mem.find(str(year) + str(month) + str(day)) == -1)):
             for sublinenumber in range(linenumber+2, len(indexlines)-1):
