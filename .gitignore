@@ -2,3 +2,5 @@
 dates.log
 output/output*.ics
 .svn
+output*.ics
+.svn
