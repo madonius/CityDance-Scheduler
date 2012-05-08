@@ -81,8 +81,7 @@ output.extend(outputheader)
 for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
         datum = sched_date.search(indexlines[linenumber+2])
-        #print(linenumber, file=sys.stderr)
-  	#reformat dates
+        
         if len(datum.groups()[0]) == 2:
             day=datum.groups()[0]
         else:
@@ -97,10 +96,10 @@ for linenumber in range(0, len(indexlines)-1):
         year=datum.groups()[2]  
          
         if isdate == 1:
-            log = open("./files/dates.log","a+")
+            log = open("./files/dates.log","r+")
             log_mem = log.read()
         else:
-            log = open("./files/dates.log","w")
+            log = open("./files/dates.log","a+")
 
         if((isdate==0) or (log_mem.find(str(year) + str(month) + str(day)) == -1)):
             for sublinenumber in range(linenumber+2, len(indexlines)-1):
@@ -114,8 +113,7 @@ for linenumber in range(0, len(indexlines)-1):
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
                     
                     #print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
-                    print(stufe)
-                    
+
                     output.append('BEGIN:VEVENT')
                     output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
                     output.append('DTEND;TZID=Europe/Berlin:'+str(year)+str(month)+str(day)+'T'+str(int(uhrzeiten.groups()[2]))+str(int(uhrzeiten.groups()[3]))+"00Z")
