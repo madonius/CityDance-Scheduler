@@ -57,9 +57,8 @@ indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com
 indexlines_withumlaute = indexhtml.readlines()
 indexhtml.close()
 
+#download the schedule for the three weeks after the current one
 for i in range(1 , 4):
-	
-	#download the page for schedule in one week
 	extendweek = today + datetime.timedelta(days=7*i)
 	indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
 	print('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
@@ -71,7 +70,7 @@ for i in range(1 , 4):
 
 indexlines = [l.decode('utf-8') for l in indexlines_withumlaute]
 
-
+#generate the relevant .ics header
 outputheader=['BEGIN:VCALENDAR','PRODID:Citydance','VERSION:2.0','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:Tanzen '+ time.strftime("%W") + ' Woche','X-WR-TIMEZONE:Europe/Berlin','X-WR-CALDESC:Tanzveranstaltungen ' + time.strftime("%W") + ' Woche']
 
 output=[]
@@ -82,12 +81,13 @@ for linenumber in range(0, len(indexlines)-1):
     if('<tr class="weekday">' in indexlines[linenumber]):
         datum = sched_date.search(indexlines[linenumber+2])
         
+	#check if number is single digits if not make it so 
         if len(datum.groups()[0]) == 2:
             day=datum.groups()[0]
         else:
             day="0"+datum.groups()[0]
              
-             
+            
         if len(datum.groups()[1]) == 2:
             month=datum.groups()[1]
         else:
@@ -95,30 +95,32 @@ for linenumber in range(0, len(indexlines)-1):
  
         year=datum.groups()[2]  
          
+        #check and open the dates.log file
         if isdate == 1:
             log = open("./files/dates.log","r+")
             log_mem = log.read()
         else:
             log = open("./files/dates.log","a+")
 
+        #where the actual foo happens
         if((isdate==0) or (log_mem.find(str(year) + str(month) + str(day)) == -1)):
             for sublinenumber in range(linenumber+2, len(indexlines)-1):
                 if('<tr class="weekday">' in indexlines[sublinenumber]):
                     break
                 elif('<tr class="overview">' in indexlines[sublinenumber]):
+                    #get the information out of the text
                     uhrzeiten = sched_time.search(indexlines[sublinenumber+2].strip())
                     stufe = sched_text.search(indexlines[sublinenumber+4].strip()).groups(1)[0]
                     tanz = sched_text.search(indexlines[sublinenumber+6].strip()).groups(1)[0]
                     kursinhalt = sched_text.search(indexlines[sublinenumber+8].strip()).groups(1)[0]
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
                     
-                    #print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
-
+                    #write the Details of the calendar event
                     output.append('BEGIN:VEVENT')
                     output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
                     output.append('DTEND;TZID=Europe/Berlin:'+str(year)+str(month)+str(day)+'T'+str(int(uhrzeiten.groups()[2]))+str(int(uhrzeiten.groups()[3]))+"00Z")
                     output.append('DTSTAMP:'+returndate())
-                    output.append('UID:citydance'+str(random.random()+random.random())+time.strftime("%W",time.gmtime())+"week@kampitakis.de")
+                    output.append('UID:citydance'+str(random.random()+random.random())+time.strftime("%W",time.gmtime())+"week@wochentage.de")
                     output.append('CREATED:'+returndate())
                     output.append('DESCRIPTION:'+kursinhalt.replace(',','\,').strip().replace("<strong>",""))
                     output.append('LAST-MODIFIED:'+returndate())
@@ -128,14 +130,16 @@ for linenumber in range(0, len(indexlines)-1):
                     output.append('SUMMARY:'+stufe.strip()+": "+tanz.strip()+" mit "+tanzlehrer.strip())
                     output.append('TRANSP:TRANSPARENT')
                     output.append('END:VEVENT')	                    
-
+            #define log file to write out the dates of the days already parsed and written
             log.write(str(year) + str(month) + str(day) +"\n")
             log.close()
         else: 
             log.close()
-                
+
+#end the Calendar                
 output.append('END:VCALENDAR')
 
+#output of the File
 print("output created", file=sys.stderr)
 if not os.path.isfile('./output/output"+time.strftime("%Y%m%d")+".ics"'):
     print("writing file", file=sys.stderr)
