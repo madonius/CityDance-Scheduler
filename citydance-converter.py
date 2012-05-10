@@ -57,17 +57,17 @@ indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com
 indexlines_withumlaute = indexhtml.readlines()
 indexhtml.close()
 
-for i in range(1 , 4):
+#for i in range(1 , 4):
 	
 	#download the page for schedule in one week
-	extendweek = today + datetime.timedelta(days=7*i)
-	indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
-	print('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
-	indexlines2_withumlaute = indexhtml.readlines()
-	indexhtml.close()
+#	extendweek = today + datetime.timedelta(days=7*i)
+#	indexhtml = urllib.request.urlopen('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
+#	print('http://www.citydance.de/component/option,com_danceschedule/date,'+extendweek.strftime("%Y-%m-%d")+'/view,danceschedule/')
+#	indexlines2_withumlaute = indexhtml.readlines()
+#	indexhtml.close()
 
-	indexlines_withumlaute.extend(indexlines2_withumlaute) 
-	del indexlines2_withumlaute
+#	indexlines_withumlaute.extend(indexlines2_withumlaute) 
+#	del indexlines0_withumlaute
 
 indexlines = [l.decode('utf-8') for l in indexlines_withumlaute]
 
@@ -113,6 +113,7 @@ for linenumber in range(0, len(indexlines)-1):
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
                     
                     #print(uhrzeiten, stufe, tanz, kursinhalt, tanzlehrer, file=sys.stderr)
+                    print(stufe.strip()+";"+tanz.strip()+";"+kursinhalt.strip()+";"+tanzlehrer.strip())
 
                     output.append('BEGIN:VEVENT')
                     output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")

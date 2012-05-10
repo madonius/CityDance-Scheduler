@@ -1,0 +1,94 @@
+Street Styles;Hip Hop;Classes (ab 12 J;Kevin
+Kids Club;4;Break Dance Kids;Vlado
+Schnupperkurs;Hip Hop;3;Marina
+Street Styles;Hip Hop;Classes (ab 16 J;Kevin
+Kids Club;8;Street Styles;Belle
+Street Styles;Videoclip;die aktuellen Choreos findet Ihr unter Videoclip;Marina
+Street Styles;Hip Hop;Elementary;Kevin
+Basis 2;Foxtrott;Rechtsdrehung, Promenade;Suzan
+Street Styles;Jazz;Elementary;Marina
+Basis 3;Walzer;Linksdrehung, Damensolo;Suzan
+Street Styles;Hip Hop;Master Class;wechselnde Trainer
+Tanzkreis;ChaChaCha;Rechtskreisel;Suzan
+Street Styles;Hip Hop ab 22;Classes;Kevin
+Basis1;Discofox;Grundschritt, Variationen;Kevin
+Bronze Jugendliche;Diverse Tänze;3;Belle
+Silber Jugendliche;Diverse Tänze;3;Vlado
+Basic Jugendliche;Diverse Tänze;3;Belle
+Gold Jugendliche;Diverse Tänze;3;Vlado
+Basis 1;Wiederholung;alle 4 Themen;Vlado
+Goldstar 2;Tango;Rückfallpoint;Andi
+Goldstar 3;Tango;Kehren;Andi
+Basis 2;ChaChaCha;Grundschritt, Variationen;Heike
+Street Styles;Disco Dance;Elementary;Vlado
+Basis 3;Tango;Link, Wiege Rechtsdrehung;Heike
+Tanzkreis;Rumba;Tanzlehrer;Muchi
+Gold;ChaChaCha, Rumba;Lasso;Andi
+Goldstar 1;ChaChaCha, Rumba;Turkish Towel;Andi
+Kids Club;6;Kindertanz;Andrea
+Kids Club;3;Kindertanz;Andrea
+Street Styles;Zumba;Join the party;Vlado
+Street Styles;Break Dance;Break Dance;Mike
+Silber Jugend (WTP);Diverse Tänze;3;Vlado
+Street Styles;Hip Hop;Classes (ab 12 J;Marina
+Bronze Jugend (WTP);Diverse Tänze;3;Vlado
+Street Styles;Hip Hop;Elementary;Marina
+Street Styles;Hip Hop;Popping, Locking;Telle
+Schnupperkurs;Popping, Locking;3;Telle
+Basis 1;Discofox;Grundschritt, Variationen;Vlado
+Basis 2;Wiederholung;alle 9 Themen;Vlado
+Basis 3;Samba;Spotturn, Damensolo;Vlado
+Street Styles;Zumba;Join the party;Suzan
+Street Styles;Hip Hop;Female;Belle
+Schnupperkurs;Hip Hop;3;Kevin
+Street Styles;Hip Hop;Classes (ab 16 J;Marina
+Basis 1;Walzer;Rechtsdrehung, Pendeln;Andi
+Kids Club;8;Videoclip;Suzan
+Basis 2;Boogie;Brezel, Damensolo;Andi
+Street Styles;Videoclip;die aktuellen Choreos findet Ihr unter Videoclip;Suzan
+Basis 3;Discofox;Platzwechsel;Andi
+Goldstar 2;Quickstep;Linksdrehung;Kevin
+Goldstar 3;Quickstep;Tipple Chasse;Kevin
+Tankreis;Latein;Grundlegende Technik;Andi
+Tanzkreis;Slowfox;Hover Cross;Andi
+Bronze;Walzer;außenseitlicher Wechsel;Suzan
+Silber;Walzer;Promenade, Chasse;Suzan
+Club Agilando (Senioren);Diverse Tänze;Laufender Unterricht, Einstieg jederzeit;Julia
+Kids Club;3;Kindertanz;Julia
+Kids Club;6;Kindertanz;Belle
+Street Styles;Jazz;Elementary;Julia
+Street Styles;Break Dance;Break Dance;Mike
+Street Styles;Jazz;Classes;Julia
+Tanzkreis;Langsamer Walzer;Wing;Tino
+Gold;Discofox;Körbchen Variationen;Heike
+Goldstar 1;Discofox;Back To Back Variationen;Heike
+Tanzkreis;Technik;Aufbauende Standard und Latein;Tino
+Basis1;Foxtrott, Blues;Grundschritt, Variationen;Tino
+Street Styles;Disco Dance;Elementary;Julia
+Fortschrittskurs Senioren;Diverse Tänze;Laufender Unterricht, Einstieg jederzeit;Andi
+Tanzkreis Stufe 1 Senioren;Diverse Tänze;Laufender Unterricht, Einstieg jederzeit;Andi
+Grundkurs Senioren;Diverse Tänze;Laufender Unterricht, Einstieg jederzeit;Andi
+Street Styles;Zumba;Join the party;Alice
+Street Styles;Hip Hop;Elementary;Vlado
+Basis 1;Discofox;Grundschritt, Variationen;Marina
+Street Styles;Hip Hop;Master Class;wechselnde Trainer
+Tanzkreis;Tango;Viererschritt Wechsel;Kevin
+Street Styles;Hip Hop ab 22;Classes;Vlado
+Bronze;Rumba;Cross Body Lead, Fan, Damensolo;Kevin
+Silber;Rumba;She Goes, Stop;Kevin
+Club Agilando (Senioren);Diverse Tänze;Laufender Unterricht, Einstieg jederzeit;Kevin
+Street Styles;Hip Hop;Classes (ab 16 J;Marina
+Kids Club;8;Street Styles;Belle
+Street Styles;Break Dance;Break Dance;Mike
+Street Styles;Hip Hop;Free Style;Kevin
+Street Styles;Hip Hop;Elementary;Kevin
+Basis 1;Wiederholung;alle 4 Themen;Andi
+Bronze;Samba;Argentinische Kicks;Vlado
+Street Styles;Hip Hop ab 30;Elementary;Kevin
+Silber;Samba;Promenade;Vlado
+Tanzkreis;geschlossen;Aufbauende Standard und Latein;Andi
+Street Styles;Zumba;Join the party;Nick
+Basis 2;Tango;Gehschritt, Wiege;Kevin
+Gold;Salsa;Linksdrehung;Andi
+Basis 3;Salsa;Cross Body Lead, Rechtsdrehung;Kevin
+Goldstar 1;Salsa;Presente;Andi
