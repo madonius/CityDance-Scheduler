@@ -1,5 +1,6 @@
 *~
 dates.log
 output/output*.ics
-output*.ics
+files/dates.log
+output/*.ics
 .svn
