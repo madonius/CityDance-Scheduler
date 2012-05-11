@@ -27,6 +27,13 @@ import time
 import random
 import urllib.request
 import codecs
+from optparse import OptionParser
+
+#parse for option given to filter for Teacher
+parser = OptionParser()
+parser.add_option("-t", "--teacher", dest = "teacher_filt", help="Filter the ICS File for a specific teacher")
+
+(opt, args) = parser.parse_args()
 
 #returns the Date in a ics compatible format
 def returndate():
@@ -40,7 +47,12 @@ if not os.path.exists('./files/'):
 if not os.path.exists('./output/'):
     os.makedirs('./output/')
 
-if not os.path.isfile('./files/dates.log'):
+if(isinstance(opt.teacher_filt,str)):
+       datespath='./files/'+opt.teacher_filt+'_dates.log'
+else:
+       datespath='./files/dates.log'
+
+if not os.path.isfile(datespath):
     isdate = 0
 else:
     isdate = 1
@@ -97,10 +109,10 @@ for linenumber in range(0, len(indexlines)-1):
          
         #check and open the dates.log file
         if isdate == 1:
-            log = open("./files/dates.log","r+")
+            log = open(datespath,"r+")
             log_mem = log.read()
         else:
-            log = open("./files/dates.log","a+")
+            log = open(datespath,"a+")
 
         #where the actual foo happens
         if((isdate==0) or (log_mem.find(str(year) + str(month) + str(day)) == -1)):
@@ -114,22 +126,24 @@ for linenumber in range(0, len(indexlines)-1):
                     tanz = sched_text.search(indexlines[sublinenumber+6].strip()).groups(1)[0]
                     kursinhalt = sched_text.search(indexlines[sublinenumber+8].strip()).groups(1)[0]
                     tanzlehrer = sched_text.search(indexlines[sublinenumber+10].strip()).groups(1)[0]
-                    
-                    #write the Details of the calendar event
-                    output.append('BEGIN:VEVENT')
-                    output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
-                    output.append('DTEND;TZID=Europe/Berlin:'+str(year)+str(month)+str(day)+'T'+str(int(uhrzeiten.groups()[2]))+str(int(uhrzeiten.groups()[3]))+"00Z")
-                    output.append('DTSTAMP:'+returndate())
-                    output.append('UID:citydance'+str(random.random()+random.random())+time.strftime("%W",time.gmtime())+"week@wochentage.de")
-                    output.append('CREATED:'+returndate())
-                    output.append('DESCRIPTION:'+kursinhalt.replace(',','\,').strip().replace("<strong>",""))
-                    output.append('LAST-MODIFIED:'+returndate())
-                    output.append('LOCATION:Citydance Muenchen')
-                    output.append('SEQUENCE:0')
-                    output.append('STATUS:TENTATIVE')
-                    output.append('SUMMARY:'+stufe.strip()+": "+tanz.strip()+" mit "+tanzlehrer.strip())
-                    output.append('TRANSP:TRANSPARENT')
-                    output.append('END:VEVENT')	                    
+
+                    print(tanzlehrer,opt.teacher_filt)
+                    if((isinstance(opt.teacher_filt,str) and (opt.teacher_filt in tanzlehrer)) or not (isinstance(opt.teacher_filt,str))):                
+		    #write the Details of the calendar event
+                        output.append('BEGIN:VEVENT')
+                        output.append('DTSTART;TZID=Europe/Berlin:'+year+month+day+'T'+str(int(uhrzeiten.groups()[0]))+str(int(uhrzeiten.groups()[1]))+"00Z")
+                        output.append('DTEND;TZID=Europe/Berlin:'+str(year)+str(month)+str(day)+'T'+str(int(uhrzeiten.groups()[2]))+str(int(uhrzeiten.groups()[3]))+"00Z")
+                        output.append('DTSTAMP:'+returndate())
+                        output.append('UID:citydance'+str(random.random()+random.random())+time.strftime("%W",time.gmtime())+"week@wochentage.de")
+                        output.append('CREATED:'+returndate())
+                        output.append('DESCRIPTION:'+kursinhalt.replace(',','\,').strip().replace("<strong>",""))
+                        output.append('LAST-MODIFIED:'+returndate())
+                        output.append('LOCATION:Citydance Muenchen')
+                        output.append('SEQUENCE:0')
+                        output.append('STATUS:TENTATIVE')
+                        output.append('SUMMARY:'+stufe.strip()+": "+tanz.strip()+" mit "+tanzlehrer.strip())
+                        output.append('TRANSP:TRANSPARENT')
+                        output.append('END:VEVENT')	                    
             #define log file to write out the dates of the days already parsed and written
             log.write(str(year) + str(month) + str(day) +"\n")
             log.close()
@@ -141,8 +155,14 @@ output.append('END:VCALENDAR')
 
 #output of the File
 print("output created", file=sys.stderr)
-if not os.path.isfile('./output/output"+time.strftime("%Y%m%d")+".ics"'):
-    print("writing file", file=sys.stderr)
-    output_file = open("./output/output"+time.strftime("%Y%m%d")+".ics","w", encoding="utf-8")
-    output_file.write('\r\n'.join(output))
-    output_file.close()
+
+if(isinstance(opt.teacher_filt, str)):
+       outputpath = "./output/output"+time.strftime("%Y%m%d")+"_"+opt.teacher_filt+".ics"
+else:
+       outputpath = "./output/output"+time.strftime("%Y%m%d")+".ics"
+
+if not os.path.isfile(outputpath):
+   print("writing file", file=sys.stderr)
+   output_file = open(outputpath,"w", encoding="utf-8")
+   output_file.write('\r\n'.join(output))
+   output_file.close()
